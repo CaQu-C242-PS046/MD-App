@@ -27,26 +27,22 @@
         <!-- GetStartedActivity -->
         <activity
             android:name=".regist.GetStarted"
-            android:exported="true"
-            android:label="@string/app_name" />
+            android:exported="true"/>
 
         <!-- Registration Page -->
         <activity
             android:name=".regist.RegistPage"
-            android:exported="true"
-            android:label="@string/app_name" />
+            android:exported="true" />
 
         <!-- LoginActivity -->
         <activity
             android:name=".regist.LoginPage"
-            android:exported="true"
-            android:label="@string/app_name" />
+            android:exported="true" />
 
         <!-- MainActivity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name" />
+            android:exported="true"/>
 
     </application>
 

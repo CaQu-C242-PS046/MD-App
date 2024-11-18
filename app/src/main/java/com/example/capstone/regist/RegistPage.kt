@@ -2,13 +2,14 @@ package com.example.capstone.regist
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
+import android.util.Patterns
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.capstone.R
+import com.example.capstone.ui.home.HomeFragment
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -58,16 +59,24 @@ class RegistPage : AppCompatActivity() {
         val password = passwordEditText.text.toString().trim()
 
         // Validations
-        if (TextUtils.isEmpty(email)) {
+        if (email.isEmpty()) {
             emailEditText.error = "Email is required"
+            emailEditText.requestFocus()
             return
         }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditText.error = "Invalid email format"
+            emailEditText.requestFocus()
             return
         }
-        if (TextUtils.isEmpty(password) || password.length < 6) {
+        if (password.isEmpty()) {
+            passwordEditText.error = "Password is required"
+            passwordEditText.requestFocus()
+            return
+        }
+        if (password.length < 6) {
             passwordEditText.error = "Password must be at least 6 characters"
+            passwordEditText.requestFocus()
             return
         }
 
@@ -75,23 +84,36 @@ class RegistPage : AppCompatActivity() {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign-up successful
                     Toast.makeText(this, "Sign-Up Successful", Toast.LENGTH_SHORT).show()
-                    navigateToLogin()
+                    navigateToHome()
                 } else {
-                    // Sign-up failed
-                    if (task.exception is FirebaseAuthUserCollisionException) {
-                        emailEditText.error = "Email already in use"
-                    } else {
-                        Toast.makeText(this, "Sign-Up Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                    }
+                    handleSignUpError(task.exception)
                 }
             }
     }
 
+    private fun handleSignUpError(exception: Exception?) {
+        when (exception) {
+            is FirebaseAuthUserCollisionException -> {
+                emailEditText.error = "Email already in use"
+                emailEditText.requestFocus()
+            }
+            else -> {
+                Toast.makeText(this, "Sign-Up Failed: ${exception?.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun performGoogleSignIn() {
-        // Google Sign-In functionality can be added here
+        // Placeholder for Google Sign-In functionality
         Toast.makeText(this, "Google Sign-In Clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun navigateToHome() {
+        // Navigate to HomeActivity after registration
+        val intent = Intent(this, HomeFragment::class.java) // Replace HomeActivity with your actual main activity
+        startActivity(intent)
+        finish()
     }
 
     private fun navigateToLogin() {
