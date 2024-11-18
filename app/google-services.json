@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "292639384272",
+    "project_id": "capstone-caqu",
+    "storage_bucket": "capstone-caqu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292639384272:android:204a4712891207191834d5",
+        "android_client_info": {
+          "package_name": "com.example.capstone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuBKnmnsCsaXfueAmYCMGg0AR72RHY7uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

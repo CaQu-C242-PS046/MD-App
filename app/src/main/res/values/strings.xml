@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Career Quest</string>
+    <string name="title_home">Home</string>
+    <string name="title_career">Career</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_softskill">Soft Skill</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="get_started_using_our_apps">Get Started Using our Apps</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_sign_up_here">Don\'t have an account? Sign Up here</string>
+    <string name="google_sign_in">Google Sign-In</string>
+    <string name="or_login_using_other_method">Or Login using other method</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="show_hide_password">Show/Hide Password</string>
+    <string name="password">PASSWORD</string>
+    <string name="username">USERNAME</string>
+    <string name="sign_in_to_continue">SIGN IN TO CONTINUE</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="email">EMAIL</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="or_sign_up_using_other_method">Or Sign Up using other method</string>
+    <string name="google_sign_up">Google Sign-Up</string>
+    <string name="already_have_an_account_sign_in_here">Already have an account? Sign In here</string>
+</resources>
