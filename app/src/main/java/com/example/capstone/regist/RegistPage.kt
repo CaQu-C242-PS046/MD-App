@@ -34,7 +34,6 @@ class RegistPage : AppCompatActivity() {
         // Initialize UI elements
         initializeViews()
 
-        // Set up click listeners
         setupClickListeners()
     }
 
@@ -58,7 +57,7 @@ class RegistPage : AppCompatActivity() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
 
-        // Validations
+
         if (email.isEmpty()) {
             emailEditText.error = "Email is required"
             emailEditText.requestFocus()

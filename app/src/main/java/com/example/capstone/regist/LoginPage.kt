@@ -22,7 +22,7 @@ class LoginPage : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var showHidePasswordIcon: ImageView
     private lateinit var signUpTextView: TextView
-    private lateinit var loginButton: MaterialButton  // Add login button for user interaction
+    private lateinit var loginButton: MaterialButton
     private var isPasswordVisible = false
     private lateinit var firebaseAuth: FirebaseAuth
 
@@ -40,18 +40,18 @@ class LoginPage : AppCompatActivity() {
         signUpTextView = findViewById(R.id.signupHereReg)
         loginButton = findViewById(R.id.loginButton)  // Add your login button
 
-        // Handle show/hide password icon click
+
         showHidePasswordIcon.setOnClickListener {
             togglePasswordVisibility()
         }
 
-        // Navigate to Registration page when "sign up" is clicked
+
         signUpTextView.setOnClickListener {
             val intent = Intent(this, RegistPage::class.java)
             startActivity(intent)
         }
 
-        // Handle login when the login button is clicked
+
         loginButton.setOnClickListener {
             performLogin()
         }
@@ -75,7 +75,7 @@ class LoginPage : AppCompatActivity() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
 
-        // Validate inputs
+
         if (email.isEmpty()) {
             emailEditText.error = "Email is required"
             emailEditText.requestFocus()
@@ -92,7 +92,7 @@ class LoginPage : AppCompatActivity() {
             return
         }
 
-        // Attempt to log in using Firebase Authentication
+
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -121,9 +121,9 @@ class LoginPage : AppCompatActivity() {
     }
 
     private fun navigateToHomeFragment() {
-        val homeFragment = HomeFragment() // Ensure this is the correct HomeFragment class
+        val homeFragment = HomeFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_home, homeFragment) // Replace with your actual container view ID
+            .replace(R.id.fragment_home, homeFragment)
             .commit()
     }
 }

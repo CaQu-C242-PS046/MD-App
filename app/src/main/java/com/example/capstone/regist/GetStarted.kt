@@ -14,13 +14,13 @@ class GetStarted : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.get_started)  // Pastikan layout ini ada
+        setContentView(R.layout.get_started)
 
-        // Initialize buttons
+
         registerButton = findViewById(R.id.button1)
         loginButton = findViewById(R.id.button2)
 
-        // Set up click listeners for the buttons
+
         registerButton.setOnClickListener {
             navigateToRegister()
         }
@@ -41,6 +41,6 @@ class GetStarted : AppCompatActivity() {
     private fun navigateToLogin() {
         val intent = Intent(this, LoginPage::class.java)
         startActivity(intent)
-        // Don't finish() here, so user can navigate back to GetStarted
+
     }
 }
