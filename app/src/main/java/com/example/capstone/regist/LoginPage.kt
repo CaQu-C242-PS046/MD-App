@@ -38,7 +38,7 @@ class LoginPage : AppCompatActivity() {
         passwordEditText = findViewById(R.id.passwordEditText)
         showHidePasswordIcon = findViewById(R.id.showHidePasswordIcon)
         signUpTextView = findViewById(R.id.signupHereReg)
-        loginButton = findViewById(R.id.loginButton)  // Add your login button
+        loginButton = findViewById(R.id.loginButton)
 
 
         showHidePasswordIcon.setOnClickListener {

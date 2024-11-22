@@ -28,10 +28,7 @@ class RegistPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_page)
 
-        // Initialize Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance()
-
-        // Initialize UI elements
         initializeViews()
 
         setupClickListeners()
@@ -79,7 +76,6 @@ class RegistPage : AppCompatActivity() {
             return
         }
 
-        // Sign up with Firebase Auth
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -104,13 +100,12 @@ class RegistPage : AppCompatActivity() {
     }
 
     private fun performGoogleSignIn() {
-        // Placeholder for Google Sign-In functionality
         Toast.makeText(this, "Google Sign-In Clicked", Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToHome() {
-        // Navigate to HomeActivity after registration
-        val intent = Intent(this, HomeFragment::class.java) // Replace HomeActivity with your actual main activity
+
+        val intent = Intent(this, HomeFragment::class.java)
         startActivity(intent)
         finish()
     }
