@@ -2,128 +2,115 @@ package com.example.capstone.regist
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
-import android.util.Patterns
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.capstone.R
-import com.example.capstone.ui.home.HomeFragment
-import com.google.android.material.button.MaterialButton
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.example.capstone.MainActivity
+import com.example.capstone.databinding.LoginPageBinding
+import com.example.capstone.retrofit.ApiClient
+import com.example.capstone.retrofit.ApiService
+import com.example.capstone.retrofit.LoginRequest
+import com.example.capstone.retrofit.LoginResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginPage : AppCompatActivity() {
 
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var showHidePasswordIcon: ImageView
-    private lateinit var signUpTextView: TextView
-    private lateinit var loginButton: MaterialButton
-    private var isPasswordVisible = false
-    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var binding: LoginPageBinding
+    private lateinit var apiService: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_page)
+        binding = LoginPageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Initialize Firebase Auth
-        firebaseAuth = FirebaseAuth.getInstance()
+        // Setup Retrofit
+        val retrofit = ApiClient.getClient()
+        apiService = retrofit.create(ApiService::class.java)
 
-        // Initialize views
-        emailEditText = findViewById(R.id.emailEditText)
-        passwordEditText = findViewById(R.id.passwordEditText)
-        showHidePasswordIcon = findViewById(R.id.showHidePasswordIcon)
-        signUpTextView = findViewById(R.id.signupHereReg)
-        loginButton = findViewById(R.id.loginButton)
+        // Setup login button listener
+        binding.loginButton.setOnClickListener {
+            val userUsername = binding.usernameEditText.text.toString()
+            val userPassword = binding.passwordEditText.text.toString()
 
-
-        showHidePasswordIcon.setOnClickListener {
-            togglePasswordVisibility()
-        }
-
-
-        signUpTextView.setOnClickListener {
-            val intent = Intent(this, RegistPage::class.java)
-            startActivity(intent)
-        }
-
-
-        loginButton.setOnClickListener {
-            performLogin()
+            // Input validation
+            if (validateInputs(userUsername, userPassword)) {
+                login(userUsername, userPassword)
+            }
         }
     }
 
-    private fun togglePasswordVisibility() {
-        if (isPasswordVisible) {
-            // Hide password
-            passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            showHidePasswordIcon.setImageResource(R.drawable.baseline_visibility_off_24) // Set to "hidden" icon
-        } else {
-            // Show password
-            passwordEditText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            showHidePasswordIcon.setImageResource(R.drawable.baseline_remove_red_eye_24) // Set to "visible" icon
+    private fun validateInputs(username: String, password: String): Boolean {
+        return when {
+            username.isEmpty() -> {
+                binding.usernameEditText.error = "Username tidak boleh kosong"
+                false
+            }
+            password.isEmpty() -> {
+                binding.passwordEditText.error = "Kata sandi tidak boleh kosong"
+                false
+            }
+            password.length < 8 -> {
+                binding.passwordEditText.error = "Kata sandi harus memiliki minimal 8 karakter"
+                false
+            }
+            else -> true
         }
-        isPasswordVisible = !isPasswordVisible
-        passwordEditText.setSelection(passwordEditText.text.length) // Maintain cursor position
     }
 
-    private fun performLogin() {
-        val email = emailEditText.text.toString().trim()
-        val password = passwordEditText.text.toString().trim()
+    private fun login(username: String, password: String) {
+        val loginRequest = LoginRequest(username, password)
+        val call = apiService.login(loginRequest)
 
+        // Show loading indicator (optional)
+        binding.loginButton.isEnabled = false
 
-        if (email.isEmpty()) {
-            emailEditText.error = "Email is required"
-            emailEditText.requestFocus()
-            return
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailEditText.error = "Invalid email format"
-            emailEditText.requestFocus()
-            return
-        }
-        if (password.isEmpty()) {
-            passwordEditText.error = "Password is required"
-            passwordEditText.requestFocus()
-            return
-        }
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                binding.loginButton.isEnabled = true
 
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+                    if (loginResponse?.success == true) {
+                        // Simpan token ke SharedPreferences
+                        val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putString("accessToken", loginResponse.accessToken)
+                        editor.putString("refreshToken", loginResponse.refreshToken)
+                        editor.apply()
 
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Login successful, navigate to HomeFragment
-                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
-                    navigateToHomeFragment()
+                        // Log token untuk debugging
+                        Log.d("LoginPage", "Access Token: ${loginResponse.accessToken}")
+
+                        // Berpindah ke MainActivity
+                        val intent = Intent(this@LoginPage, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            this@LoginPage,
+                            "Login gagal: ${loginResponse?.message ?: "Kesalahan tidak diketahui"}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
-                    // Handle login failure
-                    handleLoginError(task.exception)
+                    Toast.makeText(
+                        this@LoginPage,
+                        "Login gagal: ${response.message()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-    }
 
-    private fun handleLoginError(exception: Exception?) {
-        when (exception) {
-            is FirebaseAuthInvalidUserException -> {
-                Toast.makeText(this, "User does not exist", Toast.LENGTH_SHORT).show()
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                binding.loginButton.isEnabled = true
+                Toast.makeText(
+                    this@LoginPage,
+                    "Terjadi kesalahan: ${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            is FirebaseAuthInvalidCredentialsException -> {
-                Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                Toast.makeText(this, "Login Failed: ${exception?.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun navigateToHomeFragment() {
-        val homeFragment = HomeFragment()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_home, homeFragment)
-            .commit()
+        })
     }
 }

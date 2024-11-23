@@ -1,33 +1,30 @@
 package com.example.capstone
 
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.example.capstone.databinding.ActivityMainBinding
+import com.example.capstone.regist.LoginPage
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        // Mengecek apakah token ada
+        val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        val accessToken = sharedPreferences.getString("accessToken", null)
 
-        val navView: BottomNavigationView = binding.navView
-
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_career, R.id.navigation_profile
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        if (accessToken == null) {
+            // Token tidak ditemukan, kembali ke LoginPage
+            Log.d("MainActivity", "Token tidak ditemukan, kembali ke login.")
+            val intent = Intent(this, LoginPage::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            Log.d("MainActivity", "Token ditemukan: $accessToken")
+            // Lanjutkan aplikasi ke halaman utama
+        }
     }
 }

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,7 +17,6 @@
 
         <!-- SplashScreen as the launcher activity -->
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name=".ui.SplashScreen"
             android:exported="true">
             <intent-filter>
