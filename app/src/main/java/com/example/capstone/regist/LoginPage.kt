@@ -11,6 +11,7 @@ import com.example.capstone.retrofit.ApiClient
 import com.example.capstone.retrofit.ApiService
 import com.example.capstone.retrofit.LoginRequest
 import com.example.capstone.retrofit.LoginResponse
+import com.example.capstone.utils.SharedPreferencesHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,24 +20,27 @@ class LoginPage : AppCompatActivity() {
 
     private lateinit var binding: LoginPageBinding
     private lateinit var apiService: ApiService
+    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LoginPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Inisialisasi SharedPreferencesHelper
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
+
         // Setup Retrofit
         val retrofit = ApiClient.getClient()
         apiService = retrofit.create(ApiService::class.java)
 
-        // Setup login button listener
+        // Listener untuk tombol login
         binding.loginButton.setOnClickListener {
-            val userUsername = binding.usernameEditText.text.toString()
-            val userPassword = binding.passwordEditText.text.toString()
+            val username = binding.usernameEditText.text.toString()
+            val password = binding.passwordEditText.text.toString()
 
-            // Input validation
-            if (validateInputs(userUsername, userPassword)) {
-                login(userUsername, userPassword)
+            if (validateInputs(username, password)) {
+                login(username, password)
             }
         }
     }
@@ -63,8 +67,7 @@ class LoginPage : AppCompatActivity() {
         val loginRequest = LoginRequest(username, password)
         val call = apiService.login(loginRequest)
 
-        // Show loading indicator (optional)
-        binding.loginButton.isEnabled = false
+        binding.loginButton.isEnabled = false // Tampilkan indikator loading
 
         call.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
@@ -73,17 +76,17 @@ class LoginPage : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
                     if (loginResponse?.success == true) {
-                        // Simpan token ke SharedPreferences
-                        val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
-                        val editor = sharedPreferences.edit()
-                        editor.putString("accessToken", loginResponse.accessToken)
-                        editor.putString("refreshToken", loginResponse.refreshToken)
-                        editor.apply()
+                        // Simpan token dan username
+                        sharedPreferencesHelper.saveTokens(
+                            loginResponse.accessToken,
+                            loginResponse.refreshToken
+                        )
+                        sharedPreferencesHelper.saveUsername(username)
 
-                        // Log token untuk debugging
                         Log.d("LoginPage", "Access Token: ${loginResponse.accessToken}")
+                        Log.d("LoginPage", "Username: $username")
 
-                        // Berpindah ke MainActivity
+                        // Beralih ke MainActivity
                         val intent = Intent(this@LoginPage, MainActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -105,11 +108,7 @@ class LoginPage : AppCompatActivity() {
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 binding.loginButton.isEnabled = true
-                Toast.makeText(
-                    this@LoginPage,
-                    "Terjadi kesalahan: ${t.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this@LoginPage, "Terjadi kesalahan: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }

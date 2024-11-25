@@ -19,10 +19,9 @@
 
     <fragment
         android:id="@+id/navigation_softskill"
-        android:name="com.example.capstone.ui.profile.ProfileFragment"
+        android:name="com.example.capstone.ui.softskill.SoftskillFragment"
         android:label="@string/title_softskill"
         tools:layout="@layout/fragment_softskill" />
-
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.capstone.ui.profile.ProfileFragment"

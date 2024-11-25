@@ -1,42 +1,63 @@
 package com.example.capstone.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.capstone.databinding.FragmentProfileBinding
+import com.example.capstone.R
+import com.example.capstone.regist.LoginPage
+import com.example.capstone.utils.SharedPreferencesHelper
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
-    private var _binding: FragmentProfileBinding? = null
+    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val profileViewModel =
-            ViewModelProvider(this).get(ProfileViewModel::class.java)
+        // Inisialisasi SharedPreferencesHelper
+        sharedPreferencesHelper = SharedPreferencesHelper(requireContext())
 
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        // Bind views
+        val ivProfilePicture = view.findViewById<ImageView>(R.id.ivProfilePicture)
+        val ivEditProfile = view.findViewById<ImageView>(R.id.ivEditProfile)
+        val tvProfileName = view.findViewById<TextView>(R.id.tvProfileName)
+        val tvStats = view.findViewById<TextView>(R.id.tvStats)
+        val statsSection = view.findViewById<LinearLayout>(R.id.statsSection)
+        val tvChangePassword = view.findViewById<TextView>(R.id.tvChangePassword)
+        val tvTerms = view.findViewById<TextView>(R.id.tvTerms)
+        val btnLogOut = view.findViewById<Button>(R.id.btnLogOut)
 
-        val textView: TextView = binding.textProfile
-        profileViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        // Ambil username dari SharedPreferencesHelper
+        val username = sharedPreferencesHelper.getUsername() ?: "User"
+        tvProfileName.text = username
+
+        // Simulasikan kondisi untuk menampilkan status statistik
+        val hasRecommendation = sharedPreferencesHelper.getAccessToken() != null
+        if (hasRecommendation) {
+            tvStats.text = "Your stats: Expert Level"
+            tvStats.setTextColor(resources.getColor(R.color.black))
+        } else {
+            tvStats.text = "Awaiting recommendations..."
+            tvStats.setTextColor(resources.getColor(R.color.white))
         }
-        return root
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        // Tombol Logout
+        btnLogOut.setOnClickListener {
+            // Hapus semua data pengguna dari SharedPreferencesHelper
+            sharedPreferencesHelper.clearUserData()
+
+            // Berpindah ke halaman Login
+            val intent = Intent(requireContext(), LoginPage::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            requireActivity().finish()
+        }
     }
 }
