@@ -8,5 +8,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="fourth">#FFFECB</color>
+    <color name="second_prime">#F5F4B3</color>
+    <color name="third_prime">#4CC9FE</color>
     <color name="ic_launcher_background">#ffffff</color>
+    <color name="grey">#B3C8CF</color>
 </resources>

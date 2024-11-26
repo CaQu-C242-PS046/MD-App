@@ -42,17 +42,6 @@
             android:layout_gravity="center_horizontal" />
 
         <!-- Email Field -->
-        <EditText
-            android:id="@+id/emailEditText"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="#D3D3D3"
-            android:hint="@string/email"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:inputType="textEmailAddress"
-            android:background="@drawable/rounded_edittext_background" />
 
         <EditText
             android:id="@+id/usernameEditText"
@@ -64,6 +53,18 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:inputType="textPersonName"
+            android:background="@drawable/rounded_edittext_background" />
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#D3D3D3"
+            android:hint="@string/email"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:inputType="textEmailAddress"
             android:background="@drawable/rounded_edittext_background" />
 
         <!-- Password Field -->

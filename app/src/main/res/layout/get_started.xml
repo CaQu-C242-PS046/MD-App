@@ -30,6 +30,7 @@
         android:layout_marginRight="30dp"
         android:textSize="25sp"
         android:textColor="@color/my_prime"
+        android:fontFamily="@font/poppinsbold"
         android:text="@string/get_started_using_our_apps" />
     <Button
         android:layout_width="wrap_content"
@@ -38,6 +39,7 @@
         android:layout_below="@+id/textView1"
         android:width="200dp"
         android:text="@string/register"
+        android:fontFamily="@font/poppinsmedium"
         android:layout_marginTop="70dp"
         android:background="@drawable/button_background"
         android:textColor="@color/white"
@@ -49,6 +51,7 @@
         android:layout_centerHorizontal="true"
         android:width="200dp"
         android:text="@string/login"
+        android:fontFamily="@font/poppinsmedium"
         android:layout_below="@id/button1"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_background"

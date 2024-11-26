@@ -37,6 +37,7 @@
             android:textSize="24sp"
             android:textColor="#42A5F5"
             android:textStyle="bold"
+            android:fontFamily="@font/poppinsbold"
             android:gravity="center"
             android:layout_gravity="center_horizontal" />
 
@@ -48,6 +49,7 @@
             android:textSize="14sp"
             android:textColor="#A0A0A0"
             android:gravity="center"
+            android:fontFamily="@font/poppinsmedium"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp" />
 

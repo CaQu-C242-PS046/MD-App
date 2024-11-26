@@ -24,4 +24,14 @@
     <string name="google_sign_up">Google Sign-Up</string>
     <string name="already_have_an_account_sign_in_here">Already have an account? Sign In here</string>
     <string name="welcome_user">Welcome, User!</string>
+    <string name="cari_rekomendasi_mu">Cari Rekomendasi Mu!</string>
+    <string name="history">History</string>
+    <string name="rekomendasi">Rekomendasi</string>
+    <string name="event_picture" />
+    <string name="event_title" />
+    <string name="stats">Stats</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="change_password">Change Password</string>
+    <string name="general_settings">General Settings</string>
+    <string name="carerposibillity">Career Possibility</string>
 </resources>

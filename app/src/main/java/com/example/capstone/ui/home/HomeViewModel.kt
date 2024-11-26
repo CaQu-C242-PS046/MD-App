@@ -3,7 +3,6 @@ package com.example.capstone.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.capstone.utils.SharedPreferencesHelper
 
 class HomeViewModel : ViewModel() {
     private val _text = MutableLiveData<String>()

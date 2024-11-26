@@ -2,6 +2,7 @@ package com.example.capstone.ui.home
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,9 @@ class HomeFragment : Fragment() {
         val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        // Hilangkan ActionBar untuk fragment ini
+        (activity as AppCompatActivity).supportActionBar?.hide()
+
         // Inisialisasi SharedPreferencesHelper
         sharedPreferencesHelper = SharedPreferencesHelper(requireContext())
 
@@ -45,15 +49,6 @@ class HomeFragment : Fragment() {
         // Event klik pada tombol rekomendasi
         binding.recommendButton.setOnClickListener {
             Toast.makeText(requireContext(), "Fitur rekomendasi akan datang!", Toast.LENGTH_SHORT).show()
-        }
-
-        // Event klik pada tombol riwayat
-        binding.historyButton1.setOnClickListener {
-            Toast.makeText(requireContext(), "Riwayat 1 diklik!", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.historyButton2.setOnClickListener {
-            Toast.makeText(requireContext(), "Riwayat 2 diklik!", Toast.LENGTH_SHORT).show()
         }
 
         return binding.root
