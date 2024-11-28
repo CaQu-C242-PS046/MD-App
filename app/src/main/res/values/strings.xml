@@ -34,4 +34,10 @@
     <string name="change_password">Change Password</string>
     <string name="general_settings">General Settings</string>
     <string name="carerposibillity">Career Possibility</string>
+    <string name="article_detail" />
+    <string name="article_title" />
+    <string name="author" />
+    <string name="date" />
+    <string name="content_description_media" />
+    <string name="description" />
 </resources>

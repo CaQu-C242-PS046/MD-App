@@ -25,11 +25,6 @@ class CareerFragment : Fragment() {
 
         _binding = FragmentCareerBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textCareer
-        careerViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 
