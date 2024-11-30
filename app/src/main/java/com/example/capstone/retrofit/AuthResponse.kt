@@ -11,3 +11,7 @@ data class LoginResponse(
     val accessToken: String,
     val refreshToken: String
 )
+
+data class ChangePasswordResponse(
+    val message: String
+)

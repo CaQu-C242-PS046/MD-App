@@ -10,7 +10,7 @@ import com.example.capstone.MainActivity
 import com.example.capstone.R
 import com.example.capstone.databinding.LoginPageBinding
 import com.example.capstone.retrofit.ApiClient
-import com.example.capstone.retrofit.ApiService
+import com.example.capstone.retrofit.AuthService
 import com.example.capstone.retrofit.LoginRequest
 import com.example.capstone.retrofit.LoginResponse
 import com.example.capstone.ui.reset.ResetPassword
@@ -22,7 +22,7 @@ import retrofit2.Response
 class LoginPage : AppCompatActivity() {
 
     private lateinit var binding: LoginPageBinding
-    private lateinit var apiService: ApiService
+    private lateinit var apiService: AuthService
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
     private var isPasswordVisible = false
 
@@ -34,7 +34,7 @@ class LoginPage : AppCompatActivity() {
         sharedPreferencesHelper = SharedPreferencesHelper(this)
 
         val retrofit = ApiClient.getClient()
-        apiService = retrofit.create(ApiService::class.java)
+        apiService = retrofit.create(AuthService::class.java)
 
         binding.loginButton.setOnClickListener {
             val username = binding.usernameEditText.text.toString()

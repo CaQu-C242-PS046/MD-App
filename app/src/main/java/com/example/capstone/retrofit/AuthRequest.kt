@@ -10,3 +10,9 @@ data class LoginRequest(
     val username: String,
     val password: String
 )
+
+data class ChangePasswordRequest(
+    val oldPassword: String,
+    val newPassword: String
+)
+

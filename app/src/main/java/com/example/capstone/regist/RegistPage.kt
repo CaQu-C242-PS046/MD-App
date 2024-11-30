@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.capstone.MainActivity
 import com.example.capstone.databinding.RegisterPageBinding
 import com.example.capstone.retrofit.ApiClient
-import com.example.capstone.retrofit.ApiService
+import com.example.capstone.retrofit.AuthService
 import com.example.capstone.retrofit.RegisterRequest
 import com.example.capstone.retrofit.RegisterResponse
 import retrofit2.Call
@@ -19,7 +19,7 @@ import retrofit2.Response
 class RegistPage : AppCompatActivity() {
 
     private lateinit var binding: RegisterPageBinding
-    private lateinit var apiService: ApiService
+    private lateinit var apiService: AuthService
     private val TAG = "RegistPage"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +29,7 @@ class RegistPage : AppCompatActivity() {
 
 
         val retrofit = ApiClient.getClient()
-        apiService = retrofit.create(ApiService::class.java)
+        apiService = retrofit.create(AuthService::class.java)
 
         setupClickListeners()
     }
