@@ -11,7 +11,7 @@
         android:title="@string/title_career" />
     <item
         android:id="@+id/navigation_softskill"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/baseline_workspace_premium_24"
         android:title="@string/title_softskill" />
     <item
         android:id="@+id/navigation_profile"

@@ -20,12 +20,13 @@ class RegistPage : AppCompatActivity() {
 
     private lateinit var binding: RegisterPageBinding
     private lateinit var apiService: ApiService
-    private val TAG = "RegistPage" // Tag untuk logging
+    private val TAG = "RegistPage"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = RegisterPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         val retrofit = ApiClient.getClient()
         apiService = retrofit.create(ApiService::class.java)
@@ -43,23 +44,37 @@ class RegistPage : AppCompatActivity() {
                 register(username, email, password)
             }
         }
+
+        binding.loginTextView.setOnClickListener {
+            val intent = Intent(this, LoginPage::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+
+        binding.backButton.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun validateInputs(username: String, email: String, password: String): Boolean {
         var isValid = true
 
+
         if (username.isEmpty() || username.length < 3) {
-            binding.usernameEditText.error = "Username minimal 3 karakter"
+            binding.usernameEditText.error = "Username must be at least 3 characters"
             isValid = false
         }
+
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.emailEditText.error = "Format email tidak valid"
+            binding.emailEditText.error = "Invalid email format"
             isValid = false
         }
 
+
         if (password.isEmpty() || password.length < 8) {
-            binding.passwordEditText.error = "Password minimal 8 karakter"
+            binding.passwordEditText.error = "Password must be at least 8 characters"
             isValid = false
         }
 
@@ -67,12 +82,12 @@ class RegistPage : AppCompatActivity() {
     }
 
     private fun register(username: String, email: String, password: String) {
-        binding.signupButton.isEnabled = false
+        binding.signupButton.isEnabled = false // Disable button during the process
 
         val registerRequest = RegisterRequest(username, email, password)
         apiService.register(registerRequest).enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
-                binding.signupButton.isEnabled = true
+                binding.signupButton.isEnabled = true // Re-enable the button
 
                 if (response.isSuccessful) {
                     val registerResponse = response.body()
@@ -80,17 +95,17 @@ class RegistPage : AppCompatActivity() {
                         Toast.makeText(this@RegistPage, registerResponse.message, Toast.LENGTH_SHORT).show()
                         navigateToMainActivity()
                     } else {
-                        Toast.makeText(this@RegistPage, registerResponse?.message ?: "Registrasi gagal", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@RegistPage, registerResponse?.message ?: "Registration failed", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this@RegistPage, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegistPage, "Server error occurred", Toast.LENGTH_SHORT).show()
                     Log.e(TAG, "Error: ${response.errorBody()?.string()}")
                 }
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                binding.signupButton.isEnabled = true
-                Toast.makeText(this@RegistPage, "Gagal terhubung ke server: ${t.message}", Toast.LENGTH_SHORT).show()
+                binding.signupButton.isEnabled = true // Re-enable the button
+                Toast.makeText(this@RegistPage, "Failed to connect to server: ${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e(TAG, "Network error", t)
             }
         })

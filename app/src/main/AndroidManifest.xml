@@ -15,37 +15,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Capstone"
         tools:targetApi="31">
-
-        <!-- SplashScreen as the launcher activity -->
+        <activity
+            android:name=".ui.reset.ResetPassword"
+            android:exported="false" />
+        <activity
+            android:name=".ui.change.ChangePassword"
+            android:exported="false" /> <!-- SplashScreen as the launcher activity -->
         <activity
             android:name=".ui.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- GetStartedActivity -->
+        </activity> <!-- GetStartedActivity -->
         <activity
             android:name=".regist.GetStarted"
             android:exported="true" />
-
-        <!-- Registration Page -->
         <activity
             android:name=".regist.RegistPage"
-            android:exported="true" />
-
-        <!-- LoginActivity -->
+            android:exported="true" /> <!-- LoginActivity -->
         <activity
             android:name=".regist.LoginPage"
-            android:exported="true" />
-
-        <!-- MainActivity -->
+            android:exported="true" /> <!-- MainActivity -->
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-
     </application>
 
 </manifest>

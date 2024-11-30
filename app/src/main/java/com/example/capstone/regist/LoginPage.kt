@@ -3,14 +3,17 @@ package com.example.capstone.regist
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.capstone.MainActivity
+import com.example.capstone.R
 import com.example.capstone.databinding.LoginPageBinding
 import com.example.capstone.retrofit.ApiClient
 import com.example.capstone.retrofit.ApiService
 import com.example.capstone.retrofit.LoginRequest
 import com.example.capstone.retrofit.LoginResponse
+import com.example.capstone.ui.reset.ResetPassword
 import com.example.capstone.utils.SharedPreferencesHelper
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,20 +24,18 @@ class LoginPage : AppCompatActivity() {
     private lateinit var binding: LoginPageBinding
     private lateinit var apiService: ApiService
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
+    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LoginPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inisialisasi SharedPreferencesHelper
         sharedPreferencesHelper = SharedPreferencesHelper(this)
 
-        // Setup Retrofit
         val retrofit = ApiClient.getClient()
         apiService = retrofit.create(ApiService::class.java)
 
-        // Listener untuk tombol login
         binding.loginButton.setOnClickListener {
             val username = binding.usernameEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
@@ -42,6 +43,21 @@ class LoginPage : AppCompatActivity() {
             if (validateInputs(username, password)) {
                 login(username, password)
             }
+        }
+
+        // Fitur show/hide password
+        binding.showHidePasswordIcon.setOnClickListener {
+            togglePasswordVisibility()
+        }
+
+        binding.forgotPasswordTextView.setOnClickListener {
+            val intent = Intent(this, ResetPassword::class.java)
+            startActivity(intent)
+        }
+
+        binding.signupHereReg.setOnClickListener {
+            val intent = Intent(this, RegistPage::class.java)
+            startActivity(intent)
         }
     }
 
@@ -67,7 +83,7 @@ class LoginPage : AppCompatActivity() {
         val loginRequest = LoginRequest(username, password)
         val call = apiService.login(loginRequest)
 
-        binding.loginButton.isEnabled = false // Tampilkan indikator loading
+        binding.loginButton.isEnabled = false
 
         call.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
@@ -76,17 +92,12 @@ class LoginPage : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
                     if (loginResponse?.success == true) {
-                        // Simpan token dan username
                         sharedPreferencesHelper.saveTokens(
                             loginResponse.accessToken,
                             loginResponse.refreshToken
                         )
                         sharedPreferencesHelper.saveUsername(username)
 
-                        Log.d("LoginPage", "Access Token: ${loginResponse.accessToken}")
-                        Log.d("LoginPage", "Username: $username")
-
-                        // Beralih ke MainActivity
                         val intent = Intent(this@LoginPage, MainActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -112,4 +123,19 @@ class LoginPage : AppCompatActivity() {
             }
         })
     }
+
+    private fun togglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible
+        if (isPasswordVisible) {
+            binding.passwordEditText.inputType =
+                android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            binding.showHidePasswordIcon.setImageResource(R.drawable.baseline_remove_red_eye_24)
+        } else {
+            binding.passwordEditText.inputType =
+                android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.showHidePasswordIcon.setImageResource(R.drawable.baseline_visibility_off_24)
+        }
+        binding.passwordEditText.setSelection(binding.passwordEditText.text.length) // Retain cursor position
+    }
 }
+

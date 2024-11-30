@@ -22,31 +22,30 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inisialisasi ViewModel dan Binding
+
         val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        // Hilangkan ActionBar untuk fragment ini
         (activity as AppCompatActivity).supportActionBar?.hide()
 
-        // Inisialisasi SharedPreferencesHelper
+
         sharedPreferencesHelper = SharedPreferencesHelper(requireContext())
 
-        // Ambil nama pengguna dari SharedPreferences
+
         val username = sharedPreferencesHelper.getUsername() ?: "User"
 
-        // Setel teks selamat datang dengan nama pengguna
+
         binding.welcomeText.text = "Welcome, $username!"
 
-        // Observasi data ViewModel (jika ada)
+
         homeViewModel.text.observe(viewLifecycleOwner) { welcomeText ->
             binding.welcomeText.text = welcomeText
         }
 
-        // Set quote
+
         binding.subtitleText.text = "“The best time to start was yesterday. The next best time is now.”"
 
-        // Event klik pada tombol rekomendasi
+
         binding.recommendButton.setOnClickListener {
             Toast.makeText(requireContext(), "Fitur rekomendasi akan datang!", Toast.LENGTH_SHORT).show()
         }

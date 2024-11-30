@@ -15,7 +15,6 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Hitung mundur selama 3 detik sebelum navigasi
         val countDownTimer = object : CountDownTimer(3000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 // Tidak ada yang perlu dilakukan pada setiap tick
@@ -29,7 +28,7 @@ class SplashScreen : AppCompatActivity() {
     }
 
     private fun navigateToNextScreen() {
-        // Periksa status login dari SharedPreferences
+
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
         val nextActivity = if (sharedPreferencesHelper.isLoggedIn()) {
             MainActivity::class.java
@@ -37,7 +36,6 @@ class SplashScreen : AppCompatActivity() {
             GetStarted::class.java
         }
 
-        // Navigasi ke aktivitas yang sesuai
         val intent = Intent(this, nextActivity)
         startActivity(intent)
         finish()

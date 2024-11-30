@@ -1,4 +1,3 @@
 package com.example.capstone.ui.career
 
-class DetailCareer {
-}
+class DetailCareer

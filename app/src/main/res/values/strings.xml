@@ -40,4 +40,17 @@
     <string name="date" />
     <string name="content_description_media" />
     <string name="description" />
+    <string name="confirm_password">Confirm Password</string>
+    <string name="send_requests">Send Requests</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_change">Confirm Change</string>
+    <string name="enter_email">Enter Your Email</string>
+    <string name="forgot_password_title">Forgot Password</string>
+    <string name="reset_password_title">Reset Password Request</string>
+    <string name="old_password_fill">Please Input Your Old Password</string>
+    <string name="email_requests_fill">Please Input Your Registered Email</string>
+    <string name="email_empty_warning">Please enter your email address.</string>
+    <string name="email_sent_success">Password reset email sent successfully!</string>
+    <string name="change_password_fill">Please Input Minimum 8 Characters </string>>
 </resources>

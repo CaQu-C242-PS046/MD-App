@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.capstone.R
 import com.example.capstone.regist.LoginPage
+import com.example.capstone.ui.change.ChangePassword
 import com.example.capstone.utils.SharedPreferencesHelper
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -33,6 +34,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         val tvChangePassword = view.findViewById<TextView>(R.id.tvChangePassword)
         val tvTerms = view.findViewById<TextView>(R.id.tvTerms)
         val btnLogOut = view.findViewById<Button>(R.id.btnLogOut)
+
+        val changePasswordSection = view.findViewById<LinearLayout>(R.id.changePasswordSection)
+
+        changePasswordSection.setOnClickListener {
+            // Berpindah ke aktivitas ChangePassword
+            val intent = Intent(requireContext(), ChangePassword::class.java)
+            startActivity(intent)
+        }
 
         // Ambil username dari SharedPreferencesHelper
         val username = sharedPreferencesHelper.getUsername() ?: "User"

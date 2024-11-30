@@ -12,6 +12,5 @@ interface ApiService {
     @POST("/auth/register")
     fun register(@Body request: RegisterRequest): Call<RegisterResponse>
 
-
 }
 
