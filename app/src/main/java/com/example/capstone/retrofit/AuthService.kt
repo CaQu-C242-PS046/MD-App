@@ -16,7 +16,7 @@ interface AuthService {
 
     @POST("/auth/change")
     suspend fun changePassword(
-        @Header("Authorization") token: String,  // Header untuk token otentikasi
+        @Header("Authorization") token: String,
         @Body request: ChangePasswordRequest
     ): Response<ChangePasswordResponse>
 }

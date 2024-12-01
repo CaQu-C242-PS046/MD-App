@@ -34,10 +34,10 @@
     <string name="change_password">Change Password</string>
     <string name="general_settings">General Settings</string>
     <string name="carerposibillity">Career Possibility</string>
-    <string name="article_detail" />
-    <string name="article_title" />
-    <string name="author" />
-    <string name="date" />
+    <string name="article_detail">detail artikel</string>
+    <string name="article_title">judul artikel</string>
+    <string name="author">author</string>
+    <string name="date">date</string>
     <string name="content_description_media" />
     <string name="description" />
     <string name="confirm_password">Confirm Password</string>
